@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Monster Tasks</title>
+  <style>
+    /* CSS styles go here */
+    /* Style the user list */
+    #user-list {
+      float: left;
+      width: 200px;
+      padding: 10px;
+      background-color: #f1f1f1;
+    }
+    
+    /* Style the task list and monster section */
+    #task-list {
+      margin-left: 220px;
+    }
+  </style>
+</head>
+<body>
+  <div id="user-list">
+    <h2>Users</h2>
+    <ul id="users">
+      <li onclick="selectUser(this)">User 1</li>
+      <li onclick="selectUser(this)">User 2</li>
+      <!-- Add more users here -->
+    </ul>
+    <button onclick="addUser()">Add User</button>
+  </div>
+
+  <div id="task-list">
+    <h2>Tasks for User <span id="selected-user">Select a User</span></h2>
+    <ul id="tasks">
+      <!-- Tasks for the selected user will appear here -->
+    </ul>
+    <button onclick="addTask()">Add Task</button>
+  </div>
+
+  <div id="monster-section">
+    <h2>Monster</h2>
+    <p>Monster HP: <span id="monster-hp">100</span></p>
+    <button onclick="attackMonster()">Attack Monster</button>
+  </div>
+
+  <script>
+    // JavaScript code goes here
+    let selectedUser = null;
+    let monsterHP = 100;
+
+    function selectUser(user) {
+      selectedUser = user.textContent;
+      document.getElementById('selected-user').textContent = selectedUser;
+      // Fetch and display tasks for the selected user here
+    }
+
+    function addUser() {
+      const userName = prompt('Enter the user name:');
+      if (userName) {
+        // Add the new user to the list and save to backend
+        const userList = document.getElementById('users');
+        const newUser = document.createElement('li');
+        newUser.textContent = userName;
+        newUser.onclick = function() {
+          selectUser(newUser);
+        };
+        userList.appendChild(newUser);
+      }
+    }
+
+    function addTask() {
+      if (!selectedUser) {
+        alert('Select a user first.');
+        return;
+      }
+      const taskName = prompt('Enter the task:');
+      if (taskName) {
+        // Add the new task for the selected user and save to backend
+        const taskList = document.getElementById('tasks');
+        const newTask = document.createElement('li');
+        newTask.textContent = taskName;
+        taskList.appendChild(newTask);
+      }
+    }
+
+    function attackMonster() {
+      // Implement the logic for attacking the monster here
+    }
+  </script>
+</body>
+</html>
