@@ -1,41 +1,117 @@
 <!DOCTYPE html>
 <html lang="en-US">
+
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>To-Do Slayer</title>
   <base href="/">
-  <link rel="stylesheet" href="file:///C:/Users/hanso/OneDrive/Desktop/Projects/todo-slayer/frontend/src/css/style.css">
+  <!-- <link rel="stylesheet" href="./css/style.css"> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    main {}
+    .done {
+      background-color: green!important;
+    }
+
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td,
+    th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+
+    #picture {
+      min-width: 25%;
+      aspect-ratio: 1/1;
+      background-color: red;
+      display: block;
+      width: 15px;
+    }
+
+    .hp-bar {
+      background-color: lightgray;
+    }
+
+    #hp {
+      width:50%;
+      background-color: red;
+      padding: 0.01em 16px;
+      text-align: center;
+      color: white;
+    }
+
+
+  </style>
+
 </head>
+
 <body>
 
-<div class="login">
-  <table class="table" id="loginTable">
-    <tr>
-      <th>Select user</th>
-    </tr>
-    <tr>
-      <td>Alex</td>
-    </tr>
-    <tr>
-      <td>Janessa</td>
-    </tr>
-  </table>
+  <div class="login" style="display: none;">
+    <table class="table" id="loginTable">
+      <tr>
+        <th>Select user</th>
+      </tr>
+      <tr>
+        <td>Alex</td>
+      </tr>
+      <tr>
+        <td>Janessa</td>
+      </tr>
+    </table>
 
-  <form method="post" id="formNewUser" action="/lists">
-    <label for="new_user">New User:</label>
-    <input class="form-input" id="list_name" type="text" name="list_name" required>
-    <input class="btn btn--primary" type="submit" value="New User">
-  </form>
+    <form method="post" id="formNewUser" action="/lists">
+      <label for="new_user">New User:</label>
+      <input class="form-input" id="list_name" type="text" name="list_name" required>
+      <input class="btn btn--primary" type="submit" value="New User">
+    </form>
 
-</div>
+  </div>
 
-<div class="main">
+  <div class="main">
 
-</div>
+    <img src="./1.png" alt="" srcset="" id="picture">
 
-<script src="file:///C:/Users/hanso/OneDrive/Desktop/Projects/todo-slayer/frontend/src/js/script.js"></script>
+    <div class="hp-bar">
+      <div id="hp">50%</div>
+    </div>
+
+    <form action="" id="form-add">
+      <label for="task">Task:</label>
+      <input type="text" id="new-task" name="task" placeholder="New task" required>
+      <label for="damage">Damage:</label>
+      <input type="number" id="new-damage" name="damage" value="50" required>
+      <input type="submit" value="Submit">
+    </form>
+
+    <button onclick="markDone();">Mark Done</button>
+
+    <table id="tasks">
+      <tr>
+        <th></th>
+        <th>Task</th>
+        <th>Damage</th>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="" id=""></td>
+        <td>Dishes</td>
+        <td>10</td>
+      </tr>
+    </table>
+  </div> <!-- end main-->
+
+  <script type="text/javascript" src=".\js\script.js"></script>
 </body>
 
 </html>
