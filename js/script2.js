@@ -1,4 +1,10 @@
 
+const tasks = [];
+const doneTasks = [];
+var nextId = 0;
+var hp = 1000;
+var maxHP = 1000;
+
 const formNew = document.getElementById("form-add");
 formNew.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -7,6 +13,7 @@ formNew.addEventListener("submit", (event) => {
 });
 
 function createTask() {
+  console.log("createTask");
   const formData = new FormData(formNew);
   var listItem = document.createElement("li");
   var formElement = document.createElement("form");
@@ -33,18 +40,97 @@ function createTask() {
   formElement.appendChild(divElement);
   formElement.appendChild(deleteButton);
   listItem.appendChild(formElement);
-
+  
   todo.prepend(listItem);
+
+  // add events
+  const ob = {
+    id: nextId,
+    task: formData.get("task"),
+    damage: formData.get("damage")
+  };
+  tasks.push(ob);
+  nextId = nextId + 1;
+
+  checkboxInput.addEventListener('change', (event) => {
+    console.log(formElement);
+    console.log("changed check box to " + checkboxInput.checked);
+    if(checkboxInput.checked){
+      // move to done
+      tasks.splice(tasks.indexOf(ob), 1);
+      doneTasks.push(ob);
+      // deal damage to monster
+      damage(ob.damage);
+    }else{
+      // move to not done
+      doneTasks.splice(doneTasks.indexOf(ob), 1);
+      tasks.push(ob);
+      // remove damage from monster
+      damage(-1*ob.damage);
+    }
+    divElement.classList.toggle("done");
+    reorder(listItem, checkboxInput.checked);
+  });
+
+  deleteButton.addEventListener('click', (event) => {
+    console.log("delete button clicked");
+    if (confirm("Are you sure you want to delete \"" + ob.task + "\"") == true){
+      // pressed ok
+      if(checkboxInput.checked){
+        doneTasks.splice(doneTasks.indexOf(ob), 1);
+        listDone.removeChild(listItem);
+      }else{
+        tasks.splice(tasks.indexOf(ob), 1);
+        listTodo.removeChild(listItem);
+      }
+    }
+  });
+
+
+  console.log(tasks);
 }
 
-function readTask() {
+function readTask(id) {
+  console.log("readTask");
 
 }
 
 function updateTask() {
-
+  console.log("updateTask");
 }
 
 function destroyTask() {
+  console.log("destroyTask");
+}
 
+
+
+const listTodo = document.getElementById("todo");
+const listDone = document.getElementById("done-tasks");
+function reorder(listItem, done) {
+  if (done) {
+    // move to done list
+    listTodo.removeChild(listItem);
+    listDone.prepend(listItem);
+  } else {
+    // move to todo list
+    listDone.removeChild(listItem);
+    listTodo.appendChild(listItem);
+  }
+}
+
+
+const hpBar = document.getElementById("hp");
+function damage(amount){
+  console.log("damage: " + amount);
+  hp -= amount;
+  if(hp < 0){
+    hp = 0;
+  }else if (hp > maxHP){
+    hp = maxHP;
+  }
+  console.log("new hp: " + hp);
+  const x = (hp/maxHP) * 100;
+  hpBar.style.width = x + '%';
+  hpBar.innerHTML = x + '%';
 }
