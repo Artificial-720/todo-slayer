@@ -9,7 +9,7 @@
   <!-- <link rel="stylesheet" href="./css/style.css"> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style>
-    main {}
+    .main { display: flex; flex-direction: column; align-items: center;}
     .done {
       background-color: green!important;
     }
@@ -52,34 +52,86 @@
     }
 
 
+
+    html {
+      background-color: aqua;
+      font-family: sans-serif;
+    }
+
+    #tasks {
+      width: 100%;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    ul > li:nth-of-type(2n+1) {
+      background-color: aquamarine;
+    }
+    li {
+      background-color: white;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 22px;
+      margin-top: 5px;
+      position: relative;
+    }
+    li:hover {
+      border-top: solid red;
+      border-bottom: solid red;
+    }
+    li > form {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    li > form > div {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    li > form > div > * {
+    }
+    .checkbox {
+      transform: scale(2);
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    .task-handle {
+      visibility: hidden;
+      display: inline-block;
+      width: 11px;
+      height: 24px;
+      background-color: black;
+      cursor: move;
+    }
+    li:hover .task-handle, li:hover .btn-delete {
+      visibility: visible;
+    }
+    .btn-delete {
+      visibility: hidden;
+      cursor: pointer;
+    }
+    .description {
+
+    }
+    .damage {
+      border-radius: 40px;
+      background-color: #dddddd;
+      padding: 0.1rem 1rem;
+      font-size: 75%;
+    }
+
   </style>
 
 </head>
 
 <body>
-
-  <div class="login" style="display: none;">
-    <table class="table" id="loginTable">
-      <tr>
-        <th>Select user</th>
-      </tr>
-      <tr>
-        <td>Alex</td>
-      </tr>
-      <tr>
-        <td>Janessa</td>
-      </tr>
-    </table>
-
-    <form method="post" id="formNewUser" action="/lists">
-      <label for="new_user">New User:</label>
-      <input class="form-input" id="list_name" type="text" name="list_name" required>
-      <input class="btn btn--primary" type="submit" value="New User">
-    </form>
-
-  </div>
-
   <div class="main">
+
+    <h1>Monster Name</h1>
 
     <img src="./1.png" alt="" srcset="" id="picture">
 
@@ -95,23 +147,36 @@
       <input type="submit" value="Submit">
     </form>
 
-    <button onclick="markDone();">Mark Done</button>
 
-    <table id="tasks">
-      <tr>
-        <th></th>
-        <th>Task</th>
-        <th>Damage</th>
-      </tr>
-      <tr>
-        <td><input type="checkbox" name="" id=""></td>
-        <td>Dishes</td>
-        <td>10</td>
-      </tr>
-    </table>
+
+    <div id="tasks">
+      <ul id="todo">
+        <li draggable="true">
+          <form action="">
+            <div>
+              <!-- span to reorder -->
+              <span class="task-handle"></span>
+              <!-- check done -->
+              <input type="checkbox" name="" class="checkbox">
+              <!-- task name -->
+              <span class="description">Dishes</span>
+              <!-- task damage -->
+              <span class="damage">10</span>
+            </div>
+            <!-- delete button -->
+            <input type="button" value="X" class="btn-delete">
+          </form>
+        </li>
+
+      </ul>
+      
+      <ul id="done-tasks">
+
+      </ul>
+    </div>
   </div> <!-- end main-->
 
-  <script type="text/javascript" src=".\js\script.js"></script>
+  <script type="text/javascript" src="./js/script2.js"></script>
 </body>
 
 </html>
