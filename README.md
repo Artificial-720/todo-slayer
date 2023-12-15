@@ -2,18 +2,10 @@
 To-Do Slayer is a engaging to-do list application. Designed to increase productivity by gamifying a traditonal task list.
 
 ## Architecture
-This project runs in two seperate parts a Frontend, a Backend and a Database.
+This project is a todo list frontend app.
+
 ### File structure
 TODO
-### Frontend
-Is using plan JavaScript.
-
-### Backend
-Is using Django
-
-### Database
-PostgreSQL
-
 
 
 ## Development
