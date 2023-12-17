@@ -1,4 +1,38 @@
 
+// form start handling
+const formStart = document.getElementById("form-start");
+formStart.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const formData = new FormData(formStart);
+  console.log(formData);
+  // check values
+  // hide form
+  formStart.style.display = "none";
+  // set name
+  document.getElementById("title").innerHTML = formData.get("name")
+  // set image
+  const pic = document.getElementById("picture");
+  var reader = new FileReader();
+  reader.onload = function(event) {
+    pic.src = event.target.result;
+  };
+  reader.readAsDataURL(formData.get("image"));
+  // set health
+  hp = formData.get("hp");
+  maxHP = hp;
+  const x = (hp/maxHP) * 100;
+  hpBar.style.width = x + '%';
+  hpBar.innerHTML = x + '%';
+  // show app
+  document.getElementById("app").style.display = "flex";
+});
+
+
+
+
+
+// app
+
 const tasks = [];
 const doneTasks = [];
 var nextId = 0;
@@ -134,3 +168,13 @@ function damage(amount){
   hpBar.style.width = x + '%';
   hpBar.innerHTML = x + '%';
 }
+
+
+
+
+
+
+
+
+
+console.log("Loaded JS");

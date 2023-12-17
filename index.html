@@ -9,7 +9,18 @@
   <!-- <link rel="stylesheet" href="./css/style.css"> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style>
-    .main { display: flex; flex-direction: column; align-items: center;}
+    * {
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+    }
+
+    .main {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px;
+    }
 
     html {
       background-color: aqua;
@@ -88,12 +99,11 @@
     }
 
     #picture {
-      min-width: 500px;
-      aspect-ratio: 1/1;
+      min-width: 250px;
       background-color: red;
       display: block;
       width: 15px;
-      max-width: 2000px;
+      max-width: 100%;
     }
 
     .hp-bar {
@@ -114,14 +124,58 @@
       width: 100%;
     }
 
+    #form-start {
+      width: 100%;
+      padding: 15px 20px;
+      background-color: lightgray;
+      border-radius: 4px;
+      display: inline-block;
+      box-sizing: border-box;
+    }
+    .form-start-container {
+      padding: 8px;
+    }
+
+    body {
+      margin: 0;
+    }
+    #form-start > input, #form-start > button {
+      width: 100%;
+      padding: 14px 10px;
+      margin: 10px 0px;
+    }
+    #form-start > input:focus {
+      background-color: lightblue;
+    }
+    #form-start > button {
+      background-color: green;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    #form-start > button:hover {
+      background-color: lightgreen;
+    }
   </style>
 
 </head>
 
 <body>
-  <div class="main">
+  <div class="form-start-container">
+    <form action="" id="form-start">
+      <label for="name">Monster Name:</label>
+      <input type="text" name="name" id="">
+      <label for="image">Image:</label>
+      <input type="file" name="image" id="">
+      <label for="hp">Health:</label>
+      <input type="number" value="1000" name="hp">
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+  <div class="main" id="app">
 
-    <h1>Monster Name</h1>
+    <h1 id="title">Monster Name</h1>
 
     <img src="./1.png" alt="" srcset="" id="picture">
 
