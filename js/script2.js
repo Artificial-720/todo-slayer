@@ -4,7 +4,6 @@ const formStart = document.getElementById("form-start");
 formStart.addEventListener("submit", (event) => {
   event.preventDefault();
   const formData = new FormData(formStart);
-  console.log(formData);
   // check values
   // hide form
   formStart.style.display = "none";
@@ -47,7 +46,6 @@ formNew.addEventListener("submit", (event) => {
 });
 
 function createTask() {
-  console.log("createTask");
   const formData = new FormData(formNew);
   var listItem = document.createElement("li");
   var formElement = document.createElement("form");
@@ -86,9 +84,17 @@ function createTask() {
   tasks.push(ob);
   nextId = nextId + 1;
 
+
+  // on click make list item z index 1000, position absolute, and top equal to mouse position, also create a temp fill object, like a hint
+  handleSpan.addEventListener("mousedown", (event) => {
+     listItem.style.width = listItem.clientWidth + 'px';
+     moveItem = listItem;
+     moveItem.classList.toggle("moving");
+     hint.style.height = listItem.clientHeight + 'px';
+     listItem.insertAdjacentElement("afterend", hint);
+  });
+
   checkboxInput.addEventListener('change', (event) => {
-    console.log(formElement);
-    console.log("changed check box to " + checkboxInput.checked);
     if(checkboxInput.checked){
       // move to done
       tasks.splice(tasks.indexOf(ob), 1);
@@ -107,7 +113,6 @@ function createTask() {
   });
 
   deleteButton.addEventListener('click', (event) => {
-    console.log("delete button clicked");
     if (confirm("Are you sure you want to delete \"" + ob.task + "\"") == true){
       // pressed ok
       if(checkboxInput.checked){
@@ -119,9 +124,6 @@ function createTask() {
       }
     }
   });
-
-
-  console.log(tasks);
 }
 
 function readTask(id) {
@@ -156,14 +158,12 @@ function reorder(listItem, done) {
 
 const hpBar = document.getElementById("hp");
 function damage(amount){
-  console.log("damage: " + amount);
   hp -= amount;
   if(hp < 0){
     hp = 0;
   }else if (hp > maxHP){
     hp = maxHP;
   }
-  console.log("new hp: " + hp);
   const x = (hp/maxHP) * 100;
   hpBar.style.width = x + '%';
   hpBar.innerHTML = x + '%';
@@ -176,5 +176,52 @@ function damage(amount){
 
 
 
-
 console.log("Loaded JS");
+
+
+
+
+var moveItem = null;
+var hint = null;
+hint = document.createElement("li");
+hint.style.visibility = "hidden";
+window.addEventListener("mousemove", (event) => {
+  if (moveItem){
+    moveItem.style.top = (event.clientY - (moveItem.clientHeight/2)) + 'px';
+    // check if should move hint?
+    var presib = hint.previousSibling;
+    var nextsib = hint.nextSibling;
+
+    if (presib){
+      if (presib == moveItem){
+        presib = presib.previousSibling;
+      }
+      if(presib && presib.nodeName == "LI"){
+        if (presib.getBoundingClientRect().top + window.scrollY + (presib.clientHeight/2) > event.clientY){
+          presib.insertAdjacentElement("beforebegin", hint);
+        }
+      }
+    }
+    if (nextsib) {
+      if (nextsib == moveItem){
+        nextsib = nextsib.nextSibling;
+      }
+      if (nextsib && nextsib.nodeName == "LI"){
+        if (nextsib.getBoundingClientRect().top + window.scrollY + (nextsib.clientHeight/2) < event.clientY){
+          nextsib.insertAdjacentElement("afterend", hint);
+        }
+      }
+    }
+  }
+});
+window.addEventListener("mouseup", (event) => {
+  if(moveItem){
+    // swap with hint and delete hint
+    // listTodo.replaceChild(moveItem, hint);
+    moveItem.parentNode.replaceChild(moveItem, hint);
+    moveItem.style.top = "";
+    moveItem.style.width = "";
+    moveItem.classList.toggle("moving");
+    moveItem = null;
+  }
+});

@@ -9,25 +9,137 @@
   <!-- <link rel="stylesheet" href="./css/style.css"> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style>
+    :root {
+      --page-bg2: aqua;
+      --page-bg: #300808;
+      --list-color: aquamarine;
+
+      --task-damage-bg: #dddddd;
+
+      --hp-bg: lightgray;
+      --hp-fg: red;
+
+      --m-bg: #efedde;
+
+      /* Start form */
+      --form-start-input-bg-focus: lightblue;
+      --form-start-btn-fg: white;
+      --form-start-btn-bg: green;
+      --form-start-btn-hover: lightgreen;
+    }
     * {
       box-sizing: border-box;
       -moz-box-sizing: border-box;
       -webkit-box-sizing: border-box;
     }
-
+    html {
+      background-color: var(--page-bg);
+      font-family: sans-serif;
+    }
+    body {
+      margin: 0;
+    }
     .main {
       display: none;
       flex-direction: column;
       align-items: center;
       padding: 8px;
     }
-
-    html {
-      background-color: aqua;
-      font-family: sans-serif;
+    /* start form */
+    .form-start-container {
+      padding: 8px 15px;
+      width: 100%;
+    }
+    .form-start {
+      width: 100%;
+      padding: 15px 20px;
+      background-color: var(--m-bg);
+      border-radius: 4px;
+      display: inline-block;
+      box-sizing: border-box;
+    }
+    .form-start > input, .form-start > button {
+      width: 100%;
+      padding: 14px 10px;
+      margin: 10px 0px;
+    }
+    .form-start > input:focus {
+      background-color: var(--form-start-input-bg-focus);
+    }
+    .form-start > button {
+      background-color: var(--form-start-btn-bg);
+      color: var(--form-start-btn-fg);
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .form-start > button:hover {
+      background-color: var(--form-start-btn-hover);
     }
 
-    #tasks {
+
+    /* monster */
+    .monster-container {
+      width: 75%;
+      max-width: 1200px;
+    }
+    @media (max-width:800px) { .monster-container { width: 100%; }}
+    .m-title-container {
+      border-radius: 13px;
+      background-color: var(--m-bg);
+      padding: 3px 3px;
+    }
+    .m-title {
+      border-radius: 13px;
+      border: 1px solid black;
+      margin: 0;
+      padding: 1px 5px;
+      font-weight: bold;
+      font-family: serif;
+    }
+    .m-picture-container {
+      background-color: var(--m-bg);
+      padding: 3px;
+      margin: 0 11px;
+      display: flex;
+      justify-content: center;
+    }
+    .m-picture {
+      min-width: 250px;
+      background-color: red;
+      display: block;
+      width: 15px;
+      max-width: 100%;
+      border: 2px solid black;
+    }
+    .hp-container {
+      background-color: var(--hp-bg);
+      /* margin: 1rem 0rem; */
+      border: 3px solid var(--m-bg);
+      border-radius: 4px;
+    }
+    .hp-bar {
+      width:50%;
+      background-color: var(--hp-fg);
+      padding: 0.01em 16px;
+      text-align: center;
+      color: white;
+      border: 2px solid black;
+      border-radius: 4px;
+    }
+
+    /* new task form */
+    .m-new-task-container {
+      background-color: var(--m-bg);
+      padding: 3px;
+      margin: 0 11px;
+    }
+    #form-add {
+      width: 100%;
+    }
+
+    /* todo list */
+    .tasks {
       width: 100%;
     }
     ul {
@@ -35,9 +147,9 @@
       padding-left: 0;
       margin: 0;
     }
-    ul > li:nth-of-type(2n+1) {
+    /* ul > li:nth-of-type(2n+1) {
       background-color: aquamarine;
-    }
+    } */
     li {
       background-color: white;
       border-radius: 5px;
@@ -86,76 +198,35 @@
     .description {
 
     }
+
+    .test {
+      background-color: var(--m-bg);
+      padding: 2px;
+      border-radius: 10px;
+    }
     .damage {
-      border-radius: 40px;
-      background-color: #dddddd;
+      /* border-radius: 40px; */
+      border-radius: 10px;
+      background-color: var(--task-damage-bg);
       padding: 0.1rem 1rem;
       font-size: 75%;
+      border-top: 2px solid black;
+      border-right: 2px solid black;
+      font-weight: bold;
     }
 
     .done {
       text-decoration: line-through;
       color: #bbb;
     }
-
-    #picture {
-      min-width: 250px;
-      background-color: red;
-      display: block;
-      width: 15px;
-      max-width: 100%;
-    }
-
-    .hp-bar {
-      background-color: lightgray;
-      width: 75%;
-      margin: 1rem 0rem;
-    }
-
-    #hp {
-      width:50%;
-      background-color: red;
-      padding: 0.01em 16px;
-      text-align: center;
-      color: white;
-    }
-
-    #form-add {
-      width: 100%;
-    }
-
-    #form-start {
-      width: 100%;
-      padding: 15px 20px;
-      background-color: lightgray;
-      border-radius: 4px;
-      display: inline-block;
-      box-sizing: border-box;
-    }
-    .form-start-container {
-      padding: 8px;
-    }
-
-    body {
-      margin: 0;
-    }
-    #form-start > input, #form-start > button {
-      width: 100%;
-      padding: 14px 10px;
-      margin: 10px 0px;
-    }
-    #form-start > input:focus {
-      background-color: lightblue;
-    }
-    #form-start > button {
-      background-color: green;
-      color: white;
-      border: none;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    #form-start > button:hover {
-      background-color: lightgreen;
+    .moving {
+      position: absolute;
+      z-index: 1000;
+      -moz-user-select: none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
   </style>
 
@@ -163,7 +234,8 @@
 
 <body>
   <div class="form-start-container">
-    <form action="" id="form-start">
+    <form action="" id="form-start" class="form-start">
+      <h2>Todo Slayer</h2>
       <label for="name">Monster Name:</label>
       <input type="text" name="name" id="">
       <label for="image">Image:</label>
@@ -175,42 +247,44 @@
   </div>
   <div class="main" id="app">
 
-    <h1 id="title">Monster Name</h1>
-
-    <img src="./1.png" alt="" srcset="" id="picture">
-
-    <div class="hp-bar">
-      <div id="hp">50%</div>
+    <div class="monster-container">
+      <div class="m-title-container">
+        <h1 id="title" class="m-title">Monster Name</h1>
+      </div>
+      <div class="m-picture-container">
+        <img src="./1.png" alt="" srcset="" id="picture" class="m-picture">
+      </div>
+      <div class="hp-container">
+        <div id="hp" class="hp-bar">50%</div>
+      </div>
+      
+      <div class="m-new-task-container">
+      <form action="" id="form-add">
+        <label for="task">Task:</label>
+        <input type="text" id="new-task" name="task" placeholder="New task" required>
+        <label for="damage">Damage:</label>
+        <input type="number" id="new-damage" name="damage" value="50" required>
+        <input type="submit" value="Submit">
+      </form>
+      </div>
     </div>
 
-    <form action="" id="form-add">
-      <label for="task">Task:</label>
-      <input type="text" id="new-task" name="task" placeholder="New task" required>
-      <label for="damage">Damage:</label>
-      <input type="number" id="new-damage" name="damage" value="50" required>
-      <input type="submit" value="Submit">
-    </form>
 
-
-
-    <div id="tasks">
+    <div id="tasks" class="tasks">
       <ul id="todo">
-        <li draggable="true">
+        <!-- <li draggable="true">
           <form action="">
             <div>
-              <!-- span to reorder -->
-              <span class="task-handle"></span>
-              <!-- check done -->
+              <span class="task-handle">&#x2630;</span>
               <input type="checkbox" name="" class="checkbox">
-              <!-- task name -->
               <span class="description">Dishes</span>
-              <!-- task damage -->
-              <span class="damage">10</span>
+              <div class="test">
+                <span class="damage">10</span>
+              </div>
             </div>
-            <!-- delete button -->
             <input type="button" value="X" class="btn-delete">
           </form>
-        </li>
+        </li> -->
 
       </ul>
       
@@ -224,3 +298,10 @@
 </body>
 
 </html>
+
+<!-- 
+css for new task form
+css for mobile
+click on task to edit
+touchstart event
+ -->
