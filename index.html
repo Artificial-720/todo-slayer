@@ -24,8 +24,8 @@
       /* Start form */
       --form-start-input-bg-focus: lightblue;
       --form-start-btn-fg: white;
-      --form-start-btn-bg: green;
-      --form-start-btn-hover: lightgreen;
+      --form-start-btn-bg: #1e9e01;
+      --form-start-btn-hover: #21b700;
     }
     * {
       box-sizing: border-box;
@@ -49,9 +49,12 @@
     .form-start-container {
       padding: 8px 15px;
       width: 100%;
+      display: flex;
+      justify-content: center;
     }
     .form-start {
       width: 100%;
+      max-width: 620px;
       padding: 15px 20px;
       background-color: var(--m-bg);
       border-radius: 4px;
@@ -93,7 +96,7 @@
       border-radius: 13px;
       border: 1px solid black;
       margin: 0;
-      padding: 1px 5px;
+      padding: 1px 5px 1px 10px;
       font-weight: bold;
       font-family: serif;
     }
@@ -106,7 +109,6 @@
     }
     .m-picture {
       min-width: 250px;
-      background-color: red;
       display: block;
       width: 15px;
       max-width: 100%;
@@ -131,16 +133,37 @@
     /* new task form */
     .m-new-task-container {
       background-color: var(--m-bg);
-      padding: 3px;
+      /* padding: 3px; */
+      padding-left: 8px;
+      padding-right: 8px;
       margin: 0 11px;
     }
-    #form-add {
+    .new-task {
       width: 100%;
+    }
+    .new-task-field {
+      width: 100%;
+      padding: 14px 10px;
+      margin: 5px 0px;
+    }
+    .new-task > input[type="submit"] {
+      display: none;
+    }
+    .units-container {
+      position: relative;
+    }
+    .units {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      color: lightgray;
+      font-style: italic;
     }
 
     /* todo list */
     .tasks {
       width: 100%;
+      max-width: 1200px;
     }
     ul {
       list-style: none;
@@ -153,14 +176,16 @@
     li {
       background-color: white;
       border-radius: 5px;
-      padding: 10px 20px;
+      /* padding: 10px 20px; */
+      padding: 10px 20px 10px 10px;
       font-size: 22px;
       margin-top: 5px;
       position: relative;
     }
     li:hover {
-      border-top: solid red;
-      border-bottom: solid red;
+      /* border-top: solid red;
+      border-bottom: solid red; */
+      background-color: #dfdfdf;
     }
     li > form {
       display: flex;
@@ -172,20 +197,12 @@
       align-items: center;
       gap: 10px;
     }
-    li > form > div > * {
-    }
     .checkbox {
       transform: scale(2);
-      margin: 10px;
       cursor: pointer;
     }
-
     .task-handle {
       visibility: hidden;
-      display: inline-block;
-      width: 11px;
-      height: 24px;
-      background-color: black;
       cursor: move;
     }
     li:hover .task-handle, li:hover .btn-delete {
@@ -194,6 +211,14 @@
     .btn-delete {
       visibility: hidden;
       cursor: pointer;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+    }
+    @media (max-width:700px) {
+      .task-handle { visibility: visible; }
+      .btn-delete { visibility: visible; }
     }
     .description {
 
@@ -259,11 +284,12 @@
       </div>
       
       <div class="m-new-task-container">
-      <form action="" id="form-add">
-        <label for="task">Task:</label>
-        <input type="text" id="new-task" name="task" placeholder="New task" required>
-        <label for="damage">Damage:</label>
-        <input type="number" id="new-damage" name="damage" value="50" required>
+      <form action="" id="form-add" class="new-task">
+        <input type="text" id="new-task" class="new-task-field" name="task" placeholder="Write your next task here..." required>
+        <div class="units-container">
+          <input type="number" id="new-damage" class="new-task-field" name="damage" value="50" required>
+          <span class="units">damage</span>
+        </div>
         <input type="submit" value="Submit">
       </form>
       </div>
@@ -298,10 +324,3 @@
 </body>
 
 </html>
-
-<!-- 
-css for new task form
-css for mobile
-click on task to edit
-touchstart event
- -->

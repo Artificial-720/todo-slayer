@@ -52,12 +52,14 @@ function createTask() {
   var divElement = document.createElement("div");
   var handleSpan = document.createElement("span");
   handleSpan.className = "task-handle";
+  handleSpan.innerHTML = "&#x2630;";
   var checkboxInput = document.createElement("input");
   checkboxInput.setAttribute("type", "checkbox");
   checkboxInput.className = "checkbox";
   var descriptionSpan = document.createElement("span");
   descriptionSpan.className = "description";
   descriptionSpan.textContent = formData.get("task");
+  descriptionSpan.contentEditable = true;
   var damageSpan = document.createElement("span");
   damageSpan.className = "damage";
   damageSpan.textContent = formData.get("damage");
@@ -65,9 +67,8 @@ function createTask() {
   divElement.appendChild(checkboxInput);
   divElement.appendChild(descriptionSpan);
   divElement.appendChild(damageSpan);
-  var deleteButton = document.createElement("input");
-  deleteButton.setAttribute("type", "button");
-  deleteButton.setAttribute("value", "X");
+  var deleteButton = document.createElement("button");
+  deleteButton.innerHTML = "&#10006;";
   deleteButton.className = "btn-delete";
   formElement.appendChild(divElement);
   formElement.appendChild(deleteButton);
@@ -84,15 +85,17 @@ function createTask() {
   tasks.push(ob);
   nextId = nextId + 1;
 
-
   // on click make list item z index 1000, position absolute, and top equal to mouse position, also create a temp fill object, like a hint
-  handleSpan.addEventListener("mousedown", (event) => {
+  const downFtn = (event) => {
+    console.log("down function");
      listItem.style.width = listItem.clientWidth + 'px';
      moveItem = listItem;
      moveItem.classList.toggle("moving");
      hint.style.height = listItem.clientHeight + 'px';
      listItem.insertAdjacentElement("afterend", hint);
-  });
+  };
+  handleSpan.addEventListener("mousedown", downFtn);
+  handleSpan.addEventListener("touchstart", downFtn);
 
   checkboxInput.addEventListener('change', (event) => {
     if(checkboxInput.checked){
@@ -113,6 +116,7 @@ function createTask() {
   });
 
   deleteButton.addEventListener('click', (event) => {
+    event.preventDefault();
     if (confirm("Are you sure you want to delete \"" + ob.task + "\"") == true){
       // pressed ok
       if(checkboxInput.checked){
@@ -185,7 +189,8 @@ var moveItem = null;
 var hint = null;
 hint = document.createElement("li");
 hint.style.visibility = "hidden";
-window.addEventListener("mousemove", (event) => {
+const moveftn = (event) => {
+  console.log("move function");
   if (moveItem){
     moveItem.style.top = (event.clientY - (moveItem.clientHeight/2)) + 'px';
     // check if should move hint?
@@ -213,15 +218,18 @@ window.addEventListener("mousemove", (event) => {
       }
     }
   }
-});
-window.addEventListener("mouseup", (event) => {
+};
+window.addEventListener("mousemove", moveftn);
+window.addEventListener("touchmove", moveftn);
+const upftn = (event) => {
   if(moveItem){
     // swap with hint and delete hint
-    // listTodo.replaceChild(moveItem, hint);
     moveItem.parentNode.replaceChild(moveItem, hint);
     moveItem.style.top = "";
     moveItem.style.width = "";
     moveItem.classList.toggle("moving");
     moveItem = null;
   }
-});
+};
+window.addEventListener("mouseup", upftn);
+window.addEventListener("touchend", upftn);
