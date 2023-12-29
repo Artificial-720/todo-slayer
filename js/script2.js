@@ -19,9 +19,7 @@ formStart.addEventListener("submit", (event) => {
   // set health
   hp = formData.get("hp");
   maxHP = hp;
-  const x = (hp/maxHP) * 100;
-  hpBar.style.width = x + '%';
-  hpBar.innerHTML = x + '%';
+  refreshHP();
   // show app
   document.getElementById("app").style.display = "flex";
 });
@@ -32,8 +30,8 @@ formStart.addEventListener("submit", (event) => {
 
 // app
 
-const tasks = [];
-const doneTasks = [];
+var tasks = [];
+var doneTasks = [];
 var nextId = 0;
 var hp = 1000;
 var maxHP = 1000;
@@ -60,6 +58,7 @@ function createTask() {
   descriptionSpan.className = "description";
   descriptionSpan.textContent = formData.get("task");
   descriptionSpan.contentEditable = true;
+  descriptionSpan.spellcheck = false;
   var damageSpan = document.createElement("span");
   damageSpan.className = "damage";
   damageSpan.textContent = formData.get("damage");
@@ -87,11 +86,11 @@ function createTask() {
 
   // on click make list item z index 1000, position absolute, and top equal to mouse position, also create a temp fill object, like a hint
   const downFtn = (event) => {
-    console.log("down function");
      listItem.style.width = listItem.clientWidth + 'px';
      moveItem = listItem;
-     moveItem.classList.toggle("moving");
      hint.style.height = listItem.clientHeight + 'px';
+     moveItem.classList.toggle("moving");
+     moveItem.style.top = ((event.clientY + window.scrollY) - (moveItem.clientHeight/2)) + 'px';
      listItem.insertAdjacentElement("afterend", hint);
   };
   handleSpan.addEventListener("mousedown", downFtn);
@@ -163,26 +162,39 @@ function reorder(listItem, done) {
 const hpBar = document.getElementById("hp");
 function damage(amount){
   hp -= amount;
-  if(hp < 0){
+  if(hp <= 0){
     hp = 0;
+    document.getElementById("vicotry").style.visibility = "visible";
   }else if (hp > maxHP){
     hp = maxHP;
   }
-  const x = (hp/maxHP) * 100;
+  refreshHP();
+}
+
+function refreshHP(){
+  const x = Math.ceil((hp/maxHP) * 100);
   hpBar.style.width = x + '%';
   hpBar.innerHTML = x + '%';
 }
 
 
-
-
-
-
-
-
-console.log("Loaded JS");
-
-
+document.getElementById("vicotry").addEventListener("click", (event) => {
+  reset();
+});
+function reset(){
+  // reset values
+  listTodo.innerHTML = '';
+  listDone.innerHTML = '';
+  tasks = [];
+  doneTasks = [];
+  nextId = 0;
+  //hide victory screen
+  document.getElementById("vicotry").style.visibility = "hidden";
+  //show start form
+  formStart.style.display = "inline-block";
+  // hide app
+  document.getElementById("app").style.display = "none";
+}
 
 
 var moveItem = null;
@@ -190,9 +202,9 @@ var hint = null;
 hint = document.createElement("li");
 hint.style.visibility = "hidden";
 const moveftn = (event) => {
-  console.log("move function");
   if (moveItem){
-    moveItem.style.top = (event.clientY - (moveItem.clientHeight/2)) + 'px';
+    const y = ((event.clientY + window.scrollY) - (moveItem.clientHeight/2));
+    moveItem.style.top = y + 'px';
     // check if should move hint?
     var presib = hint.previousSibling;
     var nextsib = hint.nextSibling;
@@ -202,7 +214,7 @@ const moveftn = (event) => {
         presib = presib.previousSibling;
       }
       if(presib && presib.nodeName == "LI"){
-        if (presib.getBoundingClientRect().top + window.scrollY + (presib.clientHeight/2) > event.clientY){
+        if (presib.getBoundingClientRect().top + window.scrollY + (presib.clientHeight/2) > event.clientY + window.scrollY){
           presib.insertAdjacentElement("beforebegin", hint);
         }
       }
@@ -212,7 +224,7 @@ const moveftn = (event) => {
         nextsib = nextsib.nextSibling;
       }
       if (nextsib && nextsib.nodeName == "LI"){
-        if (nextsib.getBoundingClientRect().top + window.scrollY + (nextsib.clientHeight/2) < event.clientY){
+        if (nextsib.getBoundingClientRect().top + window.scrollY + (nextsib.clientHeight/2) < event.clientY + window.scrollY){
           nextsib.insertAdjacentElement("afterend", hint);
         }
       }
