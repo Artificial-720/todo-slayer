@@ -1,66 +1,26 @@
 # To-Do Slayer
 To-Do Slayer is a engaging to-do list application. Designed to increase productivity by gamifying a traditonal task list.
 
-## Architecture
-This project is a todo list frontend app.
+## Features
+- **Big Boss Battle**: A single, formidable monster represents all your tasks. Defeat the monster by completing your tasks and dealing damage.
 
-### File structure
-TODO
+- **Customizable Monster**: Choose the monster's name, image, and initial health before starting your productivity quest.
 
+- **Health Bar**: Keep track of your progress with a health bar that reflects the monster's health.
 
-## Development
-TODO how to work on the project
+- **Drag and Drop**: Drag and drop your taks to reorder.
 
-JavaScript
-making a AJAX call
+- **Victory Screen**: Celebrate your victories with a victory screen, reminding you of your accomplishments.
 
-### Submiting a form with AJAX
-prevent default
-```js
-const myForm = document.getElementById("ID_OF_FORM_HERE");
-myForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  sendData();
-});
-```
-send data
-```js
-function sendData() {
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", myForm.action, true);
+## Getting Started
 
-  const formData = new FormData(myForm);
+1. Clone the repository: `git clone [repository-url]`
+2. Open `index.html` in your preferred web browser.
+3. Customize the big boss monster by filling out the form on the start screen.
+4. Add tasks, defeat the big boss, and become the ultimate Todo Slayer!
 
-  xhr.onload = function () {
-    if (this.status == 201) {
-      loading.classList.toggle("done");
-      var response = JSON.parse(this.responseText);
-      console.log("response: " + response);
-      // do something with the response here
-    }
-  }
+## Technologies Used
 
-  xhr.send(formData);
-};
-```
-
-
-
-## Deployment
-TODO how to deploy the project
-
-
-
-
-
-## User Documentation
-TODO how to use the project
-user guide
-installation guide? not sure if this should be here
-
-
-
-
-- Flow of program
-- login page > select from list or enter a new name
-- show current monster and its hp, list of tasks, have buttons to add,update,remove,markdone
+- HTML
+- CSS
+- JavaScript

@@ -2,335 +2,554 @@
 <html lang="en-US">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>To-Do Slayer</title>
-  <base href="/">
-  <!-- <link rel="stylesheet" href="./css/style.css"> -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <style>
-    :root {
-      --page-bg2: aqua;
-      --page-bg: #300808;
-      --list-color: aquamarine;
-
-      --task-damage-bg: #dddddd;
-
-      --hp-bg: lightgray;
-      --hp-fg: red;
-
-      --m-bg: #efedde;
-
-      /* Start form */
-      --form-start-input-bg-focus: lightblue;
-      --form-start-btn-fg: white;
-      --form-start-btn-bg: #1e9e01;
-      --form-start-btn-hover: #21b700;
-    }
-    * {
-      box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      -webkit-box-sizing: border-box;
-    }
-    html {
-      background-color: var(--page-bg);
-      font-family: sans-serif;
-    }
-    body {
-      margin: 0;
-    }
-    .main {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      padding: 8px;
-    }
-    /* start form */
-    .form-start-container {
-      padding: 8px 15px;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
-    .form-start {
-      width: 100%;
-      max-width: 620px;
-      padding: 15px 20px;
-      background-color: var(--m-bg);
-      border-radius: 4px;
-      display: inline-block;
-      box-sizing: border-box;
-    }
-    .form-start > input, .form-start > button {
-      width: 100%;
-      padding: 14px 10px;
-      margin: 10px 0px;
-    }
-    .form-start > input:focus {
-      background-color: var(--form-start-input-bg-focus);
-    }
-    .form-start > button {
-      background-color: var(--form-start-btn-bg);
-      color: var(--form-start-btn-fg);
-      border: none;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    .form-start > button:hover {
-      background-color: var(--form-start-btn-hover);
-    }
-
-
-    /* monster */
-    .monster-container {
-      width: 75%;
-      max-width: 1200px;
-    }
-    @media (max-width:800px) { .monster-container { width: 100%; }}
-    .m-title-container {
-      border-radius: 13px;
-      background-color: var(--m-bg);
-      padding: 3px 3px;
-    }
-    .m-title {
-      border-radius: 13px;
-      border: 1px solid black;
-      margin: 0;
-      padding: 1px 5px 1px 10px;
-      font-weight: bold;
-      font-family: serif;
-    }
-    .m-picture-container {
-      background-color: var(--m-bg);
-      padding: 3px;
-      margin: 0 11px;
-      display: flex;
-      justify-content: center;
-    }
-    .m-picture {
-      min-width: 250px;
-      display: block;
-      width: 15px;
-      max-width: 100%;
-      border: 2px solid black;
-    }
-    .hp-container {
-      background-color: var(--hp-bg);
-      /* margin: 1rem 0rem; */
-      border: 3px solid var(--m-bg);
-      border-radius: 4px;
-    }
-    .hp-bar {
-      width:50%;
-      background-color: var(--hp-fg);
-      padding: 0.01em 16px;
-      text-align: center;
-      color: white;
-      border: 2px solid black;
-      border-radius: 4px;
-    }
-
-    /* new task form */
-    .m-new-task-container {
-      background-color: var(--m-bg);
-      /* padding: 3px; */
-      padding-left: 8px;
-      padding-right: 8px;
-      margin: 0 11px;
-    }
-    .new-task {
-      width: 100%;
-    }
-    .new-task-field {
-      width: 100%;
-      padding: 14px 10px;
-      margin: 5px 0px;
-    }
-    .new-task > input[type="submit"] {
-      display: none;
-    }
-    .units-container {
-      position: relative;
-    }
-    .units {
-      position: absolute;
-      top: 20px;
-      right: 40px;
-      color: lightgray;
-      font-style: italic;
-    }
-
-    /* todo list */
-    .tasks {
-      width: 100%;
-      max-width: 1200px;
-    }
-    ul {
-      list-style: none;
-      padding-left: 0;
-      margin: 0;
-    }
-    /* ul > li:nth-of-type(2n+1) {
-      background-color: aquamarine;
-    } */
-    li {
-      background-color: white;
-      border-radius: 5px;
-      /* padding: 10px 20px; */
-      padding: 10px 20px 10px 10px;
-      font-size: 22px;
-      margin-top: 5px;
-      position: relative;
-    }
-    li:hover {
-      /* border-top: solid red;
-      border-bottom: solid red; */
-      background-color: #dfdfdf;
-    }
-    li > form {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    li > form > div {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .checkbox {
-      transform: scale(2);
-      cursor: pointer;
-    }
-    .task-handle {
-      visibility: hidden;
-      cursor: move;
-    }
-    li:hover .task-handle, li:hover .btn-delete {
-      visibility: visible;
-    }
-    .btn-delete {
-      visibility: hidden;
-      cursor: pointer;
-      background-color: #f44336;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-    }
-    @media (max-width:700px) {
-      .task-handle { visibility: visible; }
-      .btn-delete { visibility: visible; }
-    }
-    .description {
-
-    }
-
-    .test {
-      background-color: var(--m-bg);
-      padding: 2px;
-      border-radius: 10px;
-    }
-    .damage {
-      /* border-radius: 40px; */
-      border-radius: 10px;
-      background-color: var(--task-damage-bg);
-      padding: 0.1rem 1rem;
-      font-size: 75%;
-      border-top: 2px solid black;
-      border-right: 2px solid black;
-      font-weight: bold;
-    }
-
-    .done {
-      text-decoration: line-through;
-      color: #bbb;
-    }
-    .moving {
-      position: absolute;
-      z-index: 1000;
-      -moz-user-select: none;
-      -khtml-user-select: none;
-      -webkit-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    /* victory screen */
-    .victory {
-      visibility: hidden;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color:rgba(0,0,0,0.7);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.5em;
-      z-index: 1000;
-      cursor: pointer;
-      flex-direction: column;
-    }
-    .victory h1 {
-      margin: 0;
-    }
-    .victory p {
-      font-size: small;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>To-Do Slayer</title>
+    <base href="/">
+    <style>
+        :root {
+          --page-bg2: aqua;
+          --page-bg: #300808;
+          --list-color: aquamarine;
+    
+          --task-damage-bg: #dddddd;
+    
+          --hp-bg: lightgray;
+          --hp-fg: red;
+    
+          --m-bg: #efedde;
+    
+          /* Start form */
+          --form-start-input-bg-focus: lightblue;
+          --form-start-btn-fg: white;
+          --form-start-btn-bg: #1e9e01;
+          --form-start-btn-hover: #21b700;
+        }
+        * {
+          box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          -webkit-box-sizing: border-box;
+        }
+        html {
+          background-color: var(--page-bg);
+          font-family: sans-serif;
+        }
+        body {
+          margin: 0;
+        }
+        .main {
+          display: none;
+          flex-direction: column;
+          align-items: center;
+          padding: 8px;
+        }
+        /* start form */
+        .form-start-container {
+          padding: 8px 15px;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+        }
+        .form-start {
+          width: 100%;
+          max-width: 620px;
+          padding: 15px 20px;
+          background-color: var(--m-bg);
+          border-radius: 4px;
+          display: inline-block;
+          box-sizing: border-box;
+        }
+        .form-start > input, .form-start > button {
+          width: 100%;
+          padding: 14px 10px;
+          margin: 10px 0px;
+        }
+        .form-start > input:focus {
+          background-color: var(--form-start-input-bg-focus);
+        }
+        .form-start > button {
+          background-color: var(--form-start-btn-bg);
+          color: var(--form-start-btn-fg);
+          border: none;
+          cursor: pointer;
+          border-radius: 4px;
+        }
+        .form-start > button:hover {
+          background-color: var(--form-start-btn-hover);
+        }
+    
+    
+        /* monster */
+        .monster-container {
+          width: 75%;
+          max-width: 1200px;
+        }
+        @media (max-width:800px) { .monster-container { width: 100%; }}
+        .m-title-container {
+          border-radius: 13px;
+          background-color: var(--m-bg);
+          padding: 3px 3px;
+        }
+        .m-title {
+          border-radius: 13px;
+          border: 1px solid black;
+          margin: 0;
+          padding: 1px 5px 1px 10px;
+          font-weight: bold;
+          font-family: serif;
+        }
+        .m-picture-container {
+          background-color: var(--m-bg);
+          padding: 3px;
+          margin: 0 11px;
+          display: flex;
+          justify-content: center;
+        }
+        .m-picture {
+          min-width: 250px;
+          display: block;
+          width: 15px;
+          max-width: 100%;
+          border: 2px solid black;
+        }
+        .hp-container {
+          background-color: var(--hp-bg);
+          border: 3px solid var(--m-bg);
+          border-radius: 4px;
+        }
+        .hp-bar {
+          width:50%;
+          background-color: var(--hp-fg);
+          padding: 0.01em 16px;
+          text-align: center;
+          color: white;
+          border: 2px solid black;
+          border-radius: 4px;
+        }
+    
+        /* new task form */
+        .m-new-task-container {
+          background-color: var(--m-bg);
+          padding-left: 8px;
+          padding-right: 8px;
+          margin: 0 11px;
+        }
+        .new-task {
+          width: 100%;
+        }
+        .new-task-field {
+          width: 100%;
+          padding: 14px 10px;
+          margin: 5px 0px;
+        }
+        .new-task > input[type="submit"] {
+          display: none;
+        }
+        .units-container {
+          position: relative;
+        }
+        .units {
+          position: absolute;
+          top: 20px;
+          right: 40px;
+          color: lightgray;
+          font-style: italic;
+        }
+    
+        /* todo list */
+        .tasks {
+          width: 100%;
+          max-width: 1200px;
+        }
+        ul {
+          list-style: none;
+          padding-left: 0;
+          margin: 0;
+        }
+        li {
+          background-color: white;
+          border-radius: 5px;
+          /* padding: 10px 20px; */
+          padding: 10px 20px 10px 10px;
+          font-size: 22px;
+          margin-top: 5px;
+          position: relative;
+        }
+        li:hover {
+          background-color: #dfdfdf;
+        }
+        li > form {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        li > form > div {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .checkbox {
+          transform: scale(2);
+          cursor: pointer;
+        }
+        .task-handle {
+          visibility: hidden;
+          cursor: move;
+        }
+        li:hover .task-handle, li:hover .btn-delete {
+          visibility: visible;
+        }
+        .btn-delete {
+          visibility: hidden;
+          cursor: pointer;
+          background-color: #f44336;
+          color: white;
+          border: none;
+          padding: 0.5rem 1rem;
+        }
+        @media (max-width:700px) {
+          .task-handle { visibility: visible; }
+          .btn-delete { visibility: visible; }
+        }
+        .description {
+    
+        }
+    
+        .test {
+          background-color: var(--m-bg);
+          padding: 2px;
+          border-radius: 10px;
+        }
+        .damage {
+          border-radius: 10px;
+          background-color: var(--task-damage-bg);
+          padding: 0.1rem 1rem;
+          font-size: 75%;
+          border-top: 2px solid black;
+          border-right: 2px solid black;
+          font-weight: bold;
+        }
+    
+        .done {
+          text-decoration: line-through;
+          color: #bbb;
+        }
+        .moving {
+          position: absolute;
+          z-index: 1000;
+          -moz-user-select: none;
+          -khtml-user-select: none;
+          -webkit-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+    
+        /* victory screen */
+        .victory {
+          visibility: hidden;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background-color:rgba(0,0,0,0.7);
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 2.5em;
+          z-index: 1000;
+          cursor: pointer;
+          flex-direction: column;
+        }
+        .victory h1 {
+          margin: 0;
+        }
+        .victory p {
+          font-size: small;
+        }
+    </style>
 
 </head>
 
 <body>
-  <div class="victory" id="vicotry">
-    <h1>Victory</h1>
-    <p>(Click anywhere to restart)</p>
-  </div>
+    <div class="victory" id="vicotry">
+        <h1>Victory</h1>
+        <p>(Click anywhere to restart)</p>
+    </div>
 
-  <div class="form-start-container">
-    <form action="" id="form-start" class="form-start">
-      <h2>Todo Slayer</h2>
-      <label for="name">Monster Name:</label>
-      <input type="text" name="name" id="">
-      <label for="image">Image:</label>
-      <input type="file" name="image" id="">
-      <label for="hp">Health:</label>
-      <input type="number" value="1000" name="hp">
-      <button type="submit">Submit</button>
-    </form>
-  </div>
-  <div class="main" id="app">
+    <div class="form-start-container">
+        <form action="" id="form-start" class="form-start">
+            <h2>Todo Slayer</h2>
+            <label for="name">Monster Name:</label>
+            <input type="text" name="name" id="">
+            <label for="image">Image:</label>
+            <input type="file" name="image" id="">
+            <label for="hp">Health:</label>
+            <input type="number" value="1000" name="hp">
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div class="main" id="app">
 
-    <div class="monster-container">
-      <div class="m-title-container">
-        <h1 id="title" class="m-title">Monster Name</h1>
-      </div>
-      <div class="m-picture-container">
-        <img src="./1.png" alt="" srcset="" id="picture" class="m-picture">
-      </div>
-      <div class="hp-container">
-        <div id="hp" class="hp-bar">50%</div>
-      </div>
-      
-      <div class="m-new-task-container">
-      <form action="" id="form-add" class="new-task">
-        <input type="text" id="new-task" class="new-task-field" name="task" placeholder="Write your next task here..." required>
-        <div class="units-container">
-          <input type="number" id="new-damage" class="new-task-field" name="damage" value="50" required>
-          <span class="units">damage</span>
+        <div class="monster-container">
+            <div class="m-title-container">
+                <h1 id="title" class="m-title">Monster Name</h1>
+            </div>
+            <div class="m-picture-container">
+                <img src="./1.png" alt="" srcset="" id="picture" class="m-picture">
+            </div>
+            <div class="hp-container">
+                <div id="hp" class="hp-bar">50%</div>
+            </div>
+
+            <div class="m-new-task-container">
+                <form action="" id="form-add" class="new-task">
+                    <input type="text" id="new-task" class="new-task-field" name="task" placeholder="Write your next task here..." required>
+                    <div class="units-container">
+                        <input type="number" id="new-damage" class="new-task-field" name="damage" value="50" required>
+                        <span class="units">damage</span>
+                    </div>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
         </div>
-        <input type="submit" value="Submit">
-      </form>
-      </div>
+
+        <div id="tasks" class="tasks">
+            <ul id="todo"></ul>
+            <ul id="done-tasks"></ul>
+        </div>
     </div>
+    <!-- end main-->
 
-
-    <div id="tasks" class="tasks">
-      <ul id="todo"></ul>
-      <ul id="done-tasks"></ul>
-    </div>
-  </div> <!-- end main-->
-
-  <script type="text/javascript" src="./js/script2.js"></script>
+    <script>
+        // form start handling
+        const formStart = document.getElementById("form-start");
+        formStart.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const formData = new FormData(formStart);
+          // check values
+          // hide form
+          formStart.style.display = "none";
+          // set name
+          document.getElementById("title").innerHTML = formData.get("name")
+          // set image
+          const pic = document.getElementById("picture");
+          var reader = new FileReader();
+          reader.onload = function(event) {
+            pic.src = event.target.result;
+          };
+          reader.readAsDataURL(formData.get("image"));
+          // set health
+          hp = formData.get("hp");
+          maxHP = hp;
+          refreshHP();
+          // show app
+          document.getElementById("app").style.display = "flex";
+        });
+        
+        // app
+        
+        var tasks = [];
+        var doneTasks = [];
+        var nextId = 0;
+        var hp = 1000;
+        var maxHP = 1000;
+        
+        const formNew = document.getElementById("form-add");
+        formNew.addEventListener("submit", (event) => {
+          event.preventDefault();
+          createTask();
+          formNew.reset();
+        });
+        
+        function createTask() {
+          const formData = new FormData(formNew);
+          var listItem = document.createElement("li");
+          var formElement = document.createElement("form");
+          var divElement = document.createElement("div");
+          var handleSpan = document.createElement("span");
+          handleSpan.className = "task-handle";
+          handleSpan.innerHTML = "&#x2630;";
+          var checkboxInput = document.createElement("input");
+          checkboxInput.setAttribute("type", "checkbox");
+          checkboxInput.className = "checkbox";
+          var descriptionSpan = document.createElement("span");
+          descriptionSpan.className = "description";
+          descriptionSpan.textContent = formData.get("task");
+          descriptionSpan.contentEditable = true;
+          descriptionSpan.spellcheck = false;
+          var damageSpan = document.createElement("span");
+          damageSpan.className = "damage";
+          damageSpan.textContent = formData.get("damage");
+          divElement.appendChild(handleSpan);
+          divElement.appendChild(checkboxInput);
+          divElement.appendChild(descriptionSpan);
+          divElement.appendChild(damageSpan);
+          var deleteButton = document.createElement("button");
+          deleteButton.innerHTML = "&#10006;";
+          deleteButton.className = "btn-delete";
+          formElement.appendChild(divElement);
+          formElement.appendChild(deleteButton);
+          listItem.appendChild(formElement);
+          
+          todo.prepend(listItem);
+        
+          // add events
+          const ob = {
+            id: nextId,
+            task: formData.get("task"),
+            damage: formData.get("damage")
+          };
+          tasks.push(ob);
+          nextId = nextId + 1;
+        
+          // on click make list item z index 1000, position absolute, and top equal to mouse position, also create a temp fill object, like a hint
+          const downFtn = (event) => {
+             listItem.style.width = listItem.clientWidth + 'px';
+             moveItem = listItem;
+             hint.style.height = listItem.clientHeight + 'px';
+             moveItem.classList.toggle("moving");
+             moveItem.style.top = ((event.clientY + window.scrollY) - (moveItem.clientHeight/2)) + 'px';
+             listItem.insertAdjacentElement("afterend", hint);
+          };
+          handleSpan.addEventListener("mousedown", downFtn);
+          handleSpan.addEventListener("touchstart", downFtn);
+        
+          checkboxInput.addEventListener('change', (event) => {
+            if(checkboxInput.checked){
+              // move to done
+              tasks.splice(tasks.indexOf(ob), 1);
+              doneTasks.push(ob);
+              // deal damage to monster
+              damage(ob.damage);
+            }else{
+              // move to not done
+              doneTasks.splice(doneTasks.indexOf(ob), 1);
+              tasks.push(ob);
+              // remove damage from monster
+              damage(-1*ob.damage);
+            }
+            divElement.classList.toggle("done");
+            reorder(listItem, checkboxInput.checked);
+          });
+        
+          deleteButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (confirm("Are you sure you want to delete \"" + ob.task + "\"") == true){
+              // pressed ok
+              if(checkboxInput.checked){
+                doneTasks.splice(doneTasks.indexOf(ob), 1);
+                listDone.removeChild(listItem);
+              }else{
+                tasks.splice(tasks.indexOf(ob), 1);
+                listTodo.removeChild(listItem);
+              }
+            }
+          });
+        }
+        
+        
+        const listTodo = document.getElementById("todo");
+        const listDone = document.getElementById("done-tasks");
+        function reorder(listItem, done) {
+          if (done) {
+            // move to done list
+            listTodo.removeChild(listItem);
+            listDone.prepend(listItem);
+          } else {
+            // move to todo list
+            listDone.removeChild(listItem);
+            listTodo.appendChild(listItem);
+          }
+        }
+        
+        
+        const hpBar = document.getElementById("hp");
+        function damage(amount){
+          hp -= amount;
+          if(hp <= 0){
+            hp = 0;
+            document.getElementById("vicotry").style.visibility = "visible";
+          }else if (hp > maxHP){
+            hp = maxHP;
+          }
+          refreshHP();
+        }
+        
+        function refreshHP(){
+          const x = Math.ceil((hp/maxHP) * 100);
+          hpBar.style.width = x + '%';
+          hpBar.innerHTML = x + '%';
+        }
+        
+        
+        document.getElementById("vicotry").addEventListener("click", (event) => {
+          reset();
+        });
+        function reset(){
+          // reset values
+          listTodo.innerHTML = '';
+          listDone.innerHTML = '';
+          tasks = [];
+          doneTasks = [];
+          nextId = 0;
+          //hide victory screen
+          document.getElementById("vicotry").style.visibility = "hidden";
+          //show start form
+          formStart.style.display = "inline-block";
+          // hide app
+          document.getElementById("app").style.display = "none";
+        }
+        
+        
+        var moveItem = null;
+        var hint = null;
+        hint = document.createElement("li");
+        hint.style.visibility = "hidden";
+        const moveftn = (event) => {
+          if (moveItem){
+            const y = ((event.clientY + window.scrollY) - (moveItem.clientHeight/2));
+            moveItem.style.top = y + 'px';
+            // check if should move hint?
+            var presib = hint.previousSibling;
+            var nextsib = hint.nextSibling;
+        
+            if (presib){
+              if (presib == moveItem){
+                presib = presib.previousSibling;
+              }
+              if(presib && presib.nodeName == "LI"){
+                if (presib.getBoundingClientRect().top + window.scrollY + (presib.clientHeight/2) > event.clientY + window.scrollY){
+                  presib.insertAdjacentElement("beforebegin", hint);
+                }
+              }
+            }
+            if (nextsib) {
+              if (nextsib == moveItem){
+                nextsib = nextsib.nextSibling;
+              }
+              if (nextsib && nextsib.nodeName == "LI"){
+                if (nextsib.getBoundingClientRect().top + window.scrollY + (nextsib.clientHeight/2) < event.clientY + window.scrollY){
+                  nextsib.insertAdjacentElement("afterend", hint);
+                }
+              }
+            }
+          }
+        };
+        window.addEventListener("mousemove", moveftn);
+        window.addEventListener("touchmove", moveftn);
+        const upftn = (event) => {
+          if(moveItem){
+            // swap with hint and delete hint
+            moveItem.parentNode.replaceChild(moveItem, hint);
+            moveItem.style.top = "";
+            moveItem.style.width = "";
+            moveItem.classList.toggle("moving");
+            moveItem = null;
+          }
+        };
+        window.addEventListener("mouseup", upftn);
+        window.addEventListener("touchend", upftn);
+    </script>
 </body>
 
 </html>
